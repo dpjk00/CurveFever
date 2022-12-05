@@ -12,14 +12,15 @@ public:
 	sf::Vector2f GetPosition();
 	sf::Vector2f GetDirection();
 	float GetSpeed();
+	float GetRotationSpeed();
 
 public:
 	sf::CircleShape body;
-	int m_RotationDir = 0;
-	sf::Vector2f m_Position;
-	sf::Vector2f m_Direction;
 
 private:
-	float m_Speed = 150.0f;
+	sf::Vector2f m_Position;
+	sf::Vector2f m_Direction;
+	float m_Speed = 200.0f;
+	float m_RotationSpeed = 5.0f;
 };
 

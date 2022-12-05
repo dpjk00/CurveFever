@@ -1,7 +1,6 @@
 ﻿  Game.cpp
 C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(23,13): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
 C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(39,13): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
-  Main.cpp
   Player.cpp
   Generating Code...
   Curve Fever.vcxproj -> C:\Users\Pajunk\source\repos\Curve Fever\Debug\Curve Fever.exe

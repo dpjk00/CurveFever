@@ -38,3 +38,8 @@ float Player::GetSpeed()
 	return m_Speed;
 }
 
+float Player::GetRotationSpeed()
+{
+	return m_RotationSpeed;
+}
+
