@@ -12,12 +12,13 @@ public:
 	void Movement(float dt);
 	void Draw();
 	void Init();
+	void DrawLine();
 
 public:
 	const int c_WindowWidth = 1000;
 
 private:
-	Player* m_Player;
+	Player m_Player;
 	sf::RenderWindow* m_Window;
 };
 

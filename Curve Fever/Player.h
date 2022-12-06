@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <vector>
 
 class Player
 {
@@ -16,11 +17,12 @@ public:
 
 public:
 	sf::CircleShape body;
+	sf::VertexArray curve;
 
 private:
 	sf::Vector2f m_Position;
 	sf::Vector2f m_Direction;
-	float m_Speed = 200.0f;
+	float m_Speed = 100.0f;
 	float m_RotationSpeed = 5.0f;
 };
 
