@@ -2,9 +2,8 @@
 
 Player::Player(float radius, sf::Color color)
 {
-	body.setFillColor(color);
-	body.setRadius(radius);
-	body.setPosition(500, 500);
+	head.setFillColor(color);
+	head.setSize(sf::Vector2f(3, 3));
 	m_Position.x = 500;
 	m_Position.y = 500;
 }
@@ -41,5 +40,10 @@ float Player::GetSpeed()
 float Player::GetRotationSpeed()
 {
 	return m_RotationSpeed;
+}
+
+float Player::GetSize()
+{
+	return m_Size;
 }
 

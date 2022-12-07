@@ -13,6 +13,7 @@ public:
 	void Draw();
 	void Init();
 	void DrawLine();
+	void CheckCollision();
 
 public:
 	const int c_WindowWidth = 1000;
