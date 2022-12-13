@@ -17,8 +17,6 @@ void Game::Start()
 	MainLoop();
 }
 
-sf::RectangleShape shape;
-
 void Game::Init()
 {
 	sf::ContextSettings settings;
@@ -27,17 +25,21 @@ void Game::Init()
 	m_Player = Player(10, sf::Color::Red);
 
 	m_Player.curve = sf::VertexArray(sf::Quads);
+}
 
-	shape.setSize(sf::Vector2f(50, 100));
-	shape.setFillColor(sf::Color::Red);
-	shape.setPosition(300, 300);
+void Game::CreateGap()
+{
+
 }
 
 void Game::Draw()
 {
-	m_Window->draw(m_Player.head);
 	m_Window->draw(m_Player.curve);
-	m_Window->draw(shape);
+
+	// TODO: delete snake's acceleration when it takes a turn
+	// TODO: function that creates gaps in a snake
+	// TODO: implement class PowerUP
+	// TODO: create AI
 }
 
 void Game::Movement(float dt)
@@ -57,7 +59,6 @@ void Game::Movement(float dt)
 	}
 
 	m_Player.SetPosition(m_Player.GetPosition() + m_Player.GetDirection() * m_Player.GetSpeed() * dt);
-	m_Player.head.setPosition(m_Player.GetPosition() + sf::Vector2f(2, 2));
 }
 
 void Game::DrawLine()
@@ -70,21 +71,13 @@ void Game::DrawLine()
 
 void Game::CheckCollision()
 {
-	if (shape.getPosition().x < m_Player.GetPosition().x + m_Player.GetSize() &&
-		shape.getPosition().x + shape.getSize().x > m_Player.GetPosition().x &&
-		shape.getPosition().y < m_Player.GetPosition().y + m_Player.GetSize() &&
-		shape.getPosition().y + shape.getSize().y > m_Player.GetPosition().y)
-		std::cout << "You hit something" << std::endl;
-
 	// last added vertexes to array is a head
 	int size = m_Player.curve.getVertexCount();
 	for (int i = 0; i < size - 300; i++) {
 		if (m_Player.curve[size - 3].position.x < m_Player.curve[i].position.x + m_Player.GetSize() &&
-			m_Player.curve[size - 3].position.x + m_Player.head.getSize().x > m_Player.curve[i].position.x &&
+			m_Player.curve[size - 3].position.x + m_Player.GetSize() > m_Player.curve[i].position.x &&
 			m_Player.curve[size - 3].position.y < m_Player.curve[i].position.y + m_Player.GetSize() &&
-			m_Player.curve[size - 3].position.y + m_Player.head.getSize().y > m_Player.curve[i].position.y) {
-
-
+			m_Player.curve[size - 3].position.y + m_Player.GetSize() > m_Player.curve[i].position.y) {
 
 			m_Player.IsAlive = false;
 			if (!m_Player.IsAlive)
@@ -112,11 +105,6 @@ void Game::MainLoop()
 			Movement(dt);
 			DrawLine();
 			CheckCollision();
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
-			for (int i = 0; i < m_Player.curve.getVertexCount(); i++) {
-				std::cout << m_Player.curve[i].position.x << " " << m_Player.curve[i].position.y << std::endl;
-			}
 		}
 		Draw();
 		m_Window->display();

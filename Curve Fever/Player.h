@@ -17,8 +17,6 @@ public:
 	float GetSize();
 
 public:
-	sf::RectangleShape head;
-	sf::Vertex body;
 	sf::VertexArray curve;
 	bool IsAlive = true;
 

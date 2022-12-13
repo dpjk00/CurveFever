@@ -8,12 +8,15 @@ public:
 	Game();
 	~Game();
 	void Start();
+
+private:
 	void MainLoop();
 	void Movement(float dt);
 	void Draw();
 	void Init();
 	void DrawLine();
 	void CheckCollision();
+	void CreateGap();
 
 public:
 	const int c_WindowWidth = 1000;

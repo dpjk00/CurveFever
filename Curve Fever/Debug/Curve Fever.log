@@ -1,3 +1,5 @@
 ﻿  Game.cpp
-C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(123,22): warning C4018: '<': signed/unsigned mismatch
+  Main.cpp
+  Player.cpp
+  Generating Code...
   Curve Fever.vcxproj -> C:\Users\Pajunk\source\repos\Curve Fever\Debug\Curve Fever.exe
