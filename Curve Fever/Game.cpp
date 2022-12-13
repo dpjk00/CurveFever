@@ -35,9 +35,9 @@ void Game::Init()
 
 void Game::Draw()
 {
+	m_Window->draw(m_Player.head);
 	m_Window->draw(m_Player.curve);
 	m_Window->draw(shape);
-	m_Window->draw(m_Player.head);
 }
 
 void Game::Movement(float dt)
@@ -57,7 +57,7 @@ void Game::Movement(float dt)
 	}
 
 	m_Player.SetPosition(m_Player.GetPosition() + m_Player.GetDirection() * m_Player.GetSpeed() * dt);
-	m_Player.head.setPosition(m_Player.GetPosition() + sf::Vector2f(50, 50));
+	m_Player.head.setPosition(m_Player.GetPosition() + sf::Vector2f(2, 2));
 }
 
 void Game::DrawLine()
@@ -68,34 +68,27 @@ void Game::DrawLine()
 	m_Player.curve.append(sf::Vertex(sf::Vector2f(m_Player.GetPosition().x - m_Player.GetSize(), m_Player.GetPosition().y + m_Player.GetSize())));
 }
 
-int n = 0;
-
 void Game::CheckCollision()
 {
-	/*if (m_Player.curve.getBounds().contains(m_Player.head.getPosition())) {
-		std::cout << "You hitted line!" << " " << n++ << " th time" << std::endl;
-		std::cout << m_Player.curve.getBounds().left << " " << m_Player.curve.getBounds().top << std::endl;
-		std::cout << m_Player.head.getPosition().x << " " << m_Player.head.getPosition().y << std::endl;
-	}*/
-	/*if (m_Player.curve.getBounds().width < m_Player.GetPosition().x + m_Player.GetSize() &&
-		m_Player.curve.getBounds().width + m_Player.GetSize() > m_Player.GetPosition().x &&
-		m_Player.curve.getBounds().height < m_Player.GetPosition().y + m_Player.GetSize() &&
-		m_Player.curve.getBounds().height + m_Player.GetSize() > m_Player.GetPosition().y)
-		std::cout << "You hitted" << std::endl;*/
 	if (shape.getPosition().x < m_Player.GetPosition().x + m_Player.GetSize() &&
 		shape.getPosition().x + shape.getSize().x > m_Player.GetPosition().x &&
 		shape.getPosition().y < m_Player.GetPosition().y + m_Player.GetSize() &&
 		shape.getPosition().y + shape.getSize().y > m_Player.GetPosition().y)
-		std::cout << "You hitted" << std::endl;
+		std::cout << "You hit something" << std::endl;
 
-	for (int i = 0; i < m_Player.curve.getVertexCount(); i++) {
-		if (m_Player.head.getPosition().x < m_Player.curve[i].position.x + m_Player.GetSize() &&
-			m_Player.head.getPosition().x + m_Player.head.getSize().x > m_Player.curve[i].position.x &&
-			m_Player.head.getPosition().y < m_Player.curve[i].position.y + m_Player.GetSize() &&
-			m_Player.head.getPosition().y + m_Player.head.getSize().y > m_Player.curve[i].position.y) {
+	// last added vertexes to array is a head
+	int size = m_Player.curve.getVertexCount();
+	for (int i = 0; i < size - 300; i++) {
+		if (m_Player.curve[size - 3].position.x < m_Player.curve[i].position.x + m_Player.GetSize() &&
+			m_Player.curve[size - 3].position.x + m_Player.head.getSize().x > m_Player.curve[i].position.x &&
+			m_Player.curve[size - 3].position.y < m_Player.curve[i].position.y + m_Player.GetSize() &&
+			m_Player.curve[size - 3].position.y + m_Player.head.getSize().y > m_Player.curve[i].position.y) {
 
-			std::cout << "You hitted line!" << " " << n++ << " th time" << std::endl;
-			std::cout << m_Player.head.getPosition().x << " " << m_Player.head.getPosition().y << std::endl;
+
+
+			m_Player.IsAlive = false;
+			if (!m_Player.IsAlive)
+				break;
 		}
 	}
 }
@@ -105,16 +98,26 @@ void Game::MainLoop()
 	sf::Clock deltaTime;
 	float dt = 0.001f;
 
+	m_Player.SetDirection(sf::Vector2f(3, 0));
+
 	while (m_Window->isOpen()) {
 		sf::Event event;
 		while (m_Window->pollEvent(event))
 			if (event.type == sf::Event::Closed)
 				m_Window->close();
 
+
 		m_Window->clear(sf::Color::Black);
-		Movement(dt);
-		DrawLine();
-		CheckCollision();
+		if (m_Player.IsAlive) {
+			Movement(dt);
+			DrawLine();
+			CheckCollision();
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
+			for (int i = 0; i < m_Player.curve.getVertexCount(); i++) {
+				std::cout << m_Player.curve[i].position.x << " " << m_Player.curve[i].position.y << std::endl;
+			}
+		}
 		Draw();
 		m_Window->display();
 		dt = deltaTime.restart().asSeconds();

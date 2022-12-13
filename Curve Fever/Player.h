@@ -20,6 +20,7 @@ public:
 	sf::RectangleShape head;
 	sf::Vertex body;
 	sf::VertexArray curve;
+	bool IsAlive = true;
 
 private:
 	sf::Vector2f m_Position;
