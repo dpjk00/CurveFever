@@ -1,5 +1,7 @@
 ﻿  Game.cpp
-  Main.cpp
-  Player.cpp
+C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Random.h(17,14): warning C4244: 'return': conversion from 'unsigned int' to 'float', possible loss of data
+C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(97,8): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+  Random.cpp
+C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Random.h(17,14): warning C4244: 'return': conversion from 'unsigned int' to 'float', possible loss of data
   Generating Code...
   Curve Fever.vcxproj -> C:\Users\Pajunk\source\repos\Curve Fever\Debug\Curve Fever.exe

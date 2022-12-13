@@ -1,6 +1,7 @@
 #include "Game.h"
 #include <math.h>
 #include <iostream>
+#include "Random.h"
 
 Game::Game()
 {
@@ -25,16 +26,14 @@ void Game::Init()
 	m_Player = Player(10, sf::Color::Red);
 
 	m_Player.curve = sf::VertexArray(sf::Quads);
-}
 
-void Game::CreateGap()
-{
-
+	m_Gaps = std::vector<float> {0.0f, 0.15f, 0.3f};
 }
 
 void Game::Draw()
 {
 	m_Window->draw(m_Player.curve);
+	m_Window->draw(m_Player.head);
 
 	// TODO: delete snake's acceleration when it takes a turn
 	// TODO: function that creates gaps in a snake
@@ -59,6 +58,8 @@ void Game::Movement(float dt)
 	}
 
 	m_Player.SetPosition(m_Player.GetPosition() + m_Player.GetDirection() * m_Player.GetSpeed() * dt);
+
+	m_Player.head.setPosition(m_Player.GetPosition());
 }
 
 void Game::DrawLine()
@@ -67,6 +68,8 @@ void Game::DrawLine()
 	m_Player.curve.append(sf::Vertex(sf::Vector2f(m_Player.GetPosition().x + m_Player.GetSize(), m_Player.GetPosition().y - m_Player.GetSize())));
 	m_Player.curve.append(sf::Vertex(sf::Vector2f(m_Player.GetPosition().x + m_Player.GetSize(), m_Player.GetPosition().y + m_Player.GetSize())));
 	m_Player.curve.append(sf::Vertex(sf::Vector2f(m_Player.GetPosition().x - m_Player.GetSize(), m_Player.GetPosition().y + m_Player.GetSize())));
+
+	m_Player.curve[m_Player.curve.getVertexCount() / 4].color = sf::Color::Yellow;
 }
 
 void Game::CheckCollision()
@@ -86,12 +89,25 @@ void Game::CheckCollision()
 	}
 }
 
+float Game::CreateGap()
+{
+	// 0.3s = big gap
+	// 0.15s = small gap
+	// 0 = no gap
+
+	return m_Gaps[Random::Int(0, m_Gaps.size())];
+}
+
 void Game::MainLoop()
 {
 	sf::Clock deltaTime;
 	float dt = 0.001f;
 
+	sf::Clock clock;
+
 	m_Player.SetDirection(sf::Vector2f(3, 0));
+
+	float gapSize = 0;
 
 	while (m_Window->isOpen()) {
 		sf::Event event;
@@ -99,12 +115,24 @@ void Game::MainLoop()
 			if (event.type == sf::Event::Closed)
 				m_Window->close();
 
-
 		m_Window->clear(sf::Color::Black);
 		if (m_Player.IsAlive) {
 			Movement(dt);
-			DrawLine();
+			if (clock.getElapsedTime().asSeconds() > 3.0f) {
+				IsGapCreated = true;
+				gapSize = CreateGap();
+				std::cout << gapSize << std::endl;
+				clock.restart();
+			}
+			if (!IsGapCreated)
+				DrawLine();
 			CheckCollision();
+
+			if (clock.getElapsedTime().asSeconds() > gapSize && IsGapCreated) {
+				IsGapCreated = false;
+				clock.restart();
+				gapSize = 0;
+			}
 		}
 		Draw();
 		m_Window->display();

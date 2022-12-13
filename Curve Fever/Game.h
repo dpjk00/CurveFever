@@ -16,7 +16,7 @@ private:
 	void Init();
 	void DrawLine();
 	void CheckCollision();
-	void CreateGap();
+	float CreateGap();
 
 public:
 	const int c_WindowWidth = 1000;
@@ -24,5 +24,7 @@ public:
 private:
 	Player m_Player;
 	sf::RenderWindow* m_Window;
+	bool IsGapCreated;
+	std::vector<float> m_Gaps;
 };
 
