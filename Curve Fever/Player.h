@@ -18,7 +18,7 @@ public:
 
 public:
 	sf::VertexArray curve;
-	sf::RectangleShape head;
+	sf::CircleShape head;
 	bool IsAlive = true;
 
 private:

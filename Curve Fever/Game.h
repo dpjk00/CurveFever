@@ -17,6 +17,7 @@ private:
 	void DrawLine();
 	void CheckCollision();
 	float CreateGap();
+	void PickPowerUp();
 
 public:
 	const int c_WindowWidth = 1000;
@@ -26,5 +27,6 @@ private:
 	sf::RenderWindow* m_Window;
 	bool IsGapCreated;
 	std::vector<float> m_Gaps;
+	std::vector<sf::CircleShape> m_PowerUps;
 };
 

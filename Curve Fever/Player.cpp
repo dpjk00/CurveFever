@@ -5,7 +5,7 @@ Player::Player(float radius, sf::Color color)
 	m_Position.x = 500;
 	m_Position.y = 500;
 
-	head.setSize(sf::Vector2f(2, 2));
+	head.setRadius(1.5f);
 	head.setPosition(sf::Vector2f(m_Position.x, m_Position.y));
 }
 
