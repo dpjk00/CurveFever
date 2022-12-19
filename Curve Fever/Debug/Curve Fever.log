@@ -1,17 +1,22 @@
 ﻿  Game.cpp
 C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Random.h(17,14): warning C4244: 'return': conversion from 'unsigned int' to 'float', possible loss of data
-C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(70,13): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(137,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(138,10): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(37,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(68,13): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(146,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(147,10): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(139,10): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(148,10): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(140,16): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(156,27): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
+C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(149,16): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(174,27): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
+C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(219,22): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(227,22): warning C4018: '<': signed/unsigned mismatch
+  Player.cpp
+  Generating Code...
   Curve Fever.vcxproj -> C:\Users\Pajunk\source\repos\Curve Fever\Debug\Curve Fever.exe

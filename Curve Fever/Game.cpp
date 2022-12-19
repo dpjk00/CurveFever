@@ -1,7 +1,4 @@
 #include "Game.h"
-#include <math.h>
-#include <iostream>
-#include "Random.h"
 
 #define PI 3.14159265359
 
@@ -11,7 +8,7 @@ Game::Game()
 }
 
 Game::~Game()
-{
+{ 
 	delete m_Window;
 }
 
@@ -36,8 +33,9 @@ void Game::Draw()
 {
 	m_Window->draw(m_Player.curve);
 	m_Window->draw(m_Player.head);
-	for (sf::CircleShape circle : m_PowerUps)
-		m_Window->draw(circle);
+
+	for (int i = 0; i < m_GlobalPowerUps.size(); i++)
+		m_Window->draw(m_GlobalPowerUps[i].m_Sprite);
 }
 
 void Game::Movement(float dt)
@@ -52,47 +50,58 @@ void Game::Movement(float dt)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
 		m_Player.SetDirection(sf::Vector2f(3, 0));
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-		m_Player.curve.clear();
-	}
 
 	m_Player.SetPosition(m_Player.GetPosition() + m_Player.GetDirection() * m_Player.GetSpeed() * dt);
 
 	m_Player.head.setPosition(m_Player.GetPosition());
 }
 
-void Game::PickPowerUp()
+void Game::SpawnPowerUp()
 {
+	PowerUp powerUp;
+
 	sf::CircleShape circle = sf::CircleShape();
 	circle.setRadius(20);
-	circle.setPosition(sf::Vector2f(Random::Int(20, c_WindowWidth - 20), Random::Int(20, c_WindowWidth)));
+	circle.setPosition(sf::Vector2f(Random::Int(20, c_WindowWidth - 40), Random::Int(20, c_WindowWidth)));
 
-	int number = Random::Int(0, 4);
+	Random::Init();
+	int number = Random::Int(0, 2);
+
 	switch (number)
 	{
 	case 0:
-		// clear map
-		circle.setFillColor(sf::Color::Blue);
+		// thick line
+		powerUp.SetType(PowerUpType::ThickLine);
+		powerUp.SetDuration(10.0f);
+		circle.setFillColor(sf::Color::Cyan);
 		break;
 	case 1:
-		// can go through walls
-		circle.setFillColor(sf::Color::Magenta);
+		// speed up
+		powerUp.SetType(PowerUpType::SpeedUp);
+		powerUp.SetDuration(10.0f);
+		circle.setFillColor(sf::Color::Green);
 		break;
 	case 2:
-		// speed up
-		circle.setFillColor(sf::Color::Green);
+		// can go through walls
+		powerUp.SetType(PowerUpType::CanGoThroughWalls);
+		circle.setFillColor(sf::Color::Magenta);
 		break;
 	case 3:
 		// speed down
+		powerUp.SetType(PowerUpType::SpeedDown);
 		circle.setFillColor(sf::Color::Red);
 		break;
 	case 4:
-		// thick line
-		circle.setFillColor(sf::Color::Cyan);
+		// clear map
+		powerUp.SetType(PowerUpType::ClearMap);
+		circle.setFillColor(sf::Color::Blue);
 		break;
 	}
 
-	m_PowerUps.push_back(circle);
+
+	powerUp.m_Sprite = circle;
+
+	m_GlobalPowerUps.push_back(powerUp);
 }
 
 void Game::DrawLine()
@@ -116,8 +125,8 @@ void Game::CheckCollision()
 	int size = m_Player.curve.getVertexCount();
 
 	// check wall collission
-	if (m_Player.curve[size - 1].position.x > c_WindowWidth || m_Player.curve[size - 1].position.x < 0 ||
-		m_Player.curve[size - 1].position.y > c_WindowWidth || m_Player.curve[size - 1].position.y < 0)
+	if (m_Player.head.getPosition().x > c_WindowWidth || m_Player.head.getPosition().x < 0 ||
+		m_Player.head.getPosition().y> c_WindowWidth || m_Player.head.getPosition().y < 0)
 		m_Player.IsAlive = false;
 
 	// check snake's collission
@@ -134,14 +143,24 @@ void Game::CheckCollision()
 	}
 
 	// check power up collision
-	for (int i = 0; i < m_PowerUps.size(); i++) {
-		int dx = m_PowerUps[i].getPosition().x + m_PowerUps[i].getRadius() - m_Player.head.getPosition().x;
-		int dy = m_PowerUps[i].getPosition().y + m_PowerUps[i].getRadius() - m_Player.head.getPosition().y;
+	for (int i = 0; i < m_GlobalPowerUps.size(); i++) {
+		int dx = m_GlobalPowerUps[i].m_Sprite.getPosition().x + m_GlobalPowerUps[i].m_Sprite.getRadius() - m_Player.head.getPosition().x;
+		int dy = m_GlobalPowerUps[i].m_Sprite.getPosition().y + m_GlobalPowerUps[i].m_Sprite.getRadius() - m_Player.head.getPosition().y;
 		int distance = std::sqrt(dx * dx + dy * dy);
 
-		if (distance < m_PowerUps[i].getRadius() + m_Player.head.getRadius()) {
-			std::cout << "hit" << std::endl;
-			m_PowerUps.erase(m_PowerUps.begin() + i);
+		if (distance < m_GlobalPowerUps[i].m_Sprite.getRadius() + m_Player.head.getRadius()) {
+			if (m_GlobalPowerUps[i].GetType() == PowerUpType::SpeedUp) {
+				m_Player.SpeedUp();
+			}
+			if (m_GlobalPowerUps[i].GetType() == PowerUpType::ClearMap)
+				m_Player.curve.clear();
+			if (m_GlobalPowerUps[i].GetType() == PowerUpType::ThickLine) {
+				m_Player.SetSize(3.0f);
+			}
+
+			m_GlobalPowerUps[i].RestartDisappearance();
+			m_Player.m_PowerUps.push_back(m_GlobalPowerUps[i]);
+			m_GlobalPowerUps.erase(m_GlobalPowerUps.begin() + i);
 		}
 	}
 }
@@ -193,11 +212,25 @@ void Game::MainLoop()
 
 			// this spawns powerups
 			if (powerUpClock.getElapsedTime().asSeconds() > 5.0f) {
-				PickPowerUp();
+				SpawnPowerUp();
 				powerUpClock.restart();
 			}
+
+			for (int i = 0; i < m_Player.m_PowerUps.size(); i++) {
+				if (m_Player.m_PowerUps[i].GetDisappearance() > m_Player.m_PowerUps[i].GetDuration()) {
+					m_Player.SetDefault(m_Player.m_PowerUps[i].GetType());
+					m_Player.m_PowerUps.erase(m_Player.m_PowerUps.begin() + i);
+				}
+			}
+
+			//deletes powerUps after 17 seconds
+			for (int i = 0; i < m_Player.m_PowerUps.size(); i++)
+				if (m_Player.m_PowerUps[i].GetDisappearance() > 17.0f)
+					m_GlobalPowerUps.erase(m_Player.m_PowerUps.begin() + i);
+
 			CheckCollision();
 		}
+
 		Draw();
 		m_Window->display();
 		dt = deltaTime.restart().asSeconds();

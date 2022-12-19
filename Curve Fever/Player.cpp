@@ -48,3 +48,24 @@ float Player::GetSize()
 	return m_Size;
 }
 
+void Player::SetSize(float newSize)
+{
+	m_Size = newSize;
+}
+
+void Player::SpeedUp()
+{
+	m_Speed += 20.0f;
+}
+
+void Player::SetDefault(PowerUpType type)
+{
+	switch (type) {
+	case PowerUpType::SpeedUp:
+		m_Speed -= 20.0f;
+		break;
+	case PowerUpType::ThickLine:
+		m_Size = c_Size;
+		break;
+	}
+}

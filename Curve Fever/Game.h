@@ -1,6 +1,11 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <iostream>
+#include <math.h>
+
+#include "Random.h"
 #include "Player.h"
+#include "PowerUp.h"
 
 class Game
 {
@@ -17,7 +22,7 @@ private:
 	void DrawLine();
 	void CheckCollision();
 	float CreateGap();
-	void PickPowerUp();
+	void SpawnPowerUp();
 
 public:
 	const int c_WindowWidth = 1000;
@@ -27,6 +32,6 @@ private:
 	sf::RenderWindow* m_Window;
 	bool IsGapCreated;
 	std::vector<float> m_Gaps;
-	std::vector<sf::CircleShape> m_PowerUps;
+	std::vector<PowerUp> m_GlobalPowerUps;
 };
 
