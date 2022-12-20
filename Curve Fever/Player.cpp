@@ -63,9 +63,11 @@ void Player::SetDefault(PowerUpType type)
 	switch (type) {
 	case PowerUpType::SpeedUp:
 		m_Speed -= 20.0f;
+		isSpeedUp = false;
 		break;
 	case PowerUpType::ThickLine:
 		m_Size = c_Size;
+		isThickLine = false;
 		break;
 	}
 }

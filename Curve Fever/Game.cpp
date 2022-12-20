@@ -65,20 +65,20 @@ void Game::SpawnPowerUp()
 	circle.setPosition(sf::Vector2f(Random::Int(20, c_WindowWidth - 40), Random::Int(20, c_WindowWidth)));
 
 	Random::Init();
-	int number = Random::Int(0, 2);
+	int number = Random::Int(0, 1);
 
 	switch (number)
 	{
 	case 0:
 		// thick line
 		powerUp.SetType(PowerUpType::ThickLine);
-		powerUp.SetDuration(10.0f);
+		powerUp.SetDuration(3.0f);
 		circle.setFillColor(sf::Color::Cyan);
 		break;
 	case 1:
 		// speed up
 		powerUp.SetType(PowerUpType::SpeedUp);
-		powerUp.SetDuration(10.0f);
+		powerUp.SetDuration(3.0f);
 		circle.setFillColor(sf::Color::Green);
 		break;
 	case 2:
@@ -148,14 +148,34 @@ void Game::CheckCollision()
 		int dy = m_GlobalPowerUps[i].m_Sprite.getPosition().y + m_GlobalPowerUps[i].m_Sprite.getRadius() - m_Player.head.getPosition().y;
 		int distance = std::sqrt(dx * dx + dy * dy);
 
-		if (distance < m_GlobalPowerUps[i].m_Sprite.getRadius() + m_Player.head.getRadius()) {
-			if (m_GlobalPowerUps[i].GetType() == PowerUpType::SpeedUp) {
-				m_Player.SpeedUp();
+		if (distance < m_GlobalPowerUps[i].m_Sprite.getRadius() + m_Player.head.getRadius())
+		{
+			// SPEED UP
+			if (m_GlobalPowerUps[i].GetType() == PowerUpType::SpeedUp && m_Player.isSpeedUp) {
+				for (int j = 0; j < m_Player.m_PowerUps.size(); j++)
+					if (m_Player.m_PowerUps[j].GetType() == PowerUpType::SpeedUp)
+						m_Player.m_PowerUps[j].RestartDisappearance();
+				m_Player.isSpeedUp = true;
 			}
+			else if (m_GlobalPowerUps[i].GetType() == PowerUpType::SpeedUp) {
+				m_Player.SpeedUp();
+				m_Player.isSpeedUp = true;
+			}
+
+			// CLEAR MAP
 			if (m_GlobalPowerUps[i].GetType() == PowerUpType::ClearMap)
 				m_Player.curve.clear();
-			if (m_GlobalPowerUps[i].GetType() == PowerUpType::ThickLine) {
+
+			// THICK LINE
+			if (m_GlobalPowerUps[i].GetType() == PowerUpType::ThickLine && m_Player.isThickLine) {
+				for (int j = 0; j < m_Player.m_PowerUps.size(); j++)
+					if (m_Player.m_PowerUps[j].GetType() == PowerUpType::ThickLine)
+						m_Player.m_PowerUps[j].RestartDisappearance();
+				m_Player.isThickLine = true;
+			}
+			else if (m_GlobalPowerUps[i].GetType() == PowerUpType::ThickLine) {
 				m_Player.SetSize(3.0f);
+				m_Player.isThickLine = true;
 			}
 
 			m_GlobalPowerUps[i].RestartDisappearance();
@@ -211,7 +231,7 @@ void Game::MainLoop()
 			}
 
 			// this spawns powerups
-			if (powerUpClock.getElapsedTime().asSeconds() > 5.0f) {
+			if (powerUpClock.getElapsedTime().asSeconds() > 2.0f) {
 				SpawnPowerUp();
 				powerUpClock.restart();
 			}

@@ -24,14 +24,16 @@ public:
 	sf::VertexArray curve;
 	sf::CircleShape head;
 	bool IsAlive = true;
-	bool isThickLine = false;
 	std::vector<PowerUp> m_PowerUps;
+
+	bool isThickLine = false;
+	bool isSpeedUp = false;
 
 private:
 	sf::Vector2f m_Position;
 	sf::Vector2f m_Direction;
 
-	float m_Speed = 50.0f;
+	float m_Speed = 60.0f;
 	float m_RotationSpeed = 4.0f;
 	float m_Size = 1;
 	

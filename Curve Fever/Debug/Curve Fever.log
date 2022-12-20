@@ -14,9 +14,8 @@ C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(148,10): warning C
               T=float
           ]
 C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(149,16): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(174,27): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
-C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(219,22): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(227,22): warning C4018: '<': signed/unsigned mismatch
-  Player.cpp
-  Generating Code...
+C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(161,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(184,27): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
+C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(229,22): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(237,22): warning C4018: '<': signed/unsigned mismatch
   Curve Fever.vcxproj -> C:\Users\Pajunk\source\repos\Curve Fever\Debug\Curve Fever.exe
