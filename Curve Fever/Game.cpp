@@ -47,6 +47,10 @@ void Game::Movement(float dt)
 		m_Player.SetDirection(m_Player.GetDirection() - sf::Vector2f(m_Player.GetDirection().y, -m_Player.GetDirection().x) * m_Player.GetRotationSpeed() * dt);
 	}
 
+	if (m_Player.canGoThroughWalls) {
+		m_Player.GoThroughWalls();
+	}
+
 	m_Player.SetPosition(m_Player.GetPosition() + m_Player.GetDirection() * m_Player.GetSpeed() * dt);
 
 	m_Player.head.setPosition(m_Player.GetPosition() - sf::Vector2f(2, 2));
@@ -61,7 +65,8 @@ void Game::SpawnPowerUp()
 	circle.setPosition(sf::Vector2f(Random::Int(20, c_WindowWidth - 40), Random::Int(20, c_WindowWidth)));
 
 	Random::Init();
-	int number = Random::Int(0, 5);
+	//int number = Random::Int(0, 5);
+	int number = 2;
 
 	switch (number)
 	{
@@ -80,11 +85,13 @@ void Game::SpawnPowerUp()
 	case 2:
 		// can go through walls
 		powerUp.SetType(PowerUpType::CanGoThroughWalls);
+		powerUp.SetDuration(5.0f);
 		circle.setFillColor(sf::Color::Magenta);
 		break;
 	case 3:
 		// speed down
 		powerUp.SetType(PowerUpType::SpeedDown);
+		powerUp.SetDuration(3.0f);
 		circle.setFillColor(sf::Color::Red);
 		break;
 	case 4:
@@ -121,13 +128,15 @@ void Game::CheckCollision()
 	int size = m_Player.curve.getVertexCount();
 
 	// check wall collission
-	if (m_Player.head.getPosition().x > c_WindowWidth || m_Player.head.getPosition().x < 0 ||
-		m_Player.head.getPosition().y> c_WindowWidth || m_Player.head.getPosition().y < 0) {
-		m_Player.IsAlive = false;
+	if (!m_Player.canGoThroughWalls) {
+		if (m_Player.head.getPosition().x > c_WindowWidth || m_Player.head.getPosition().x < 0 ||
+			m_Player.head.getPosition().y> c_WindowWidth || m_Player.head.getPosition().y < 0) {
+			m_Player.IsAlive = false;
+		}
 	}
 
 	// check snake collission
-	for (int i = 0; i < size - 700; i++) {
+	for (int i = 0; i < size - 2000; i++) {
 		if (m_Player.head.getPosition().x < m_Player.curve[i].position.x + m_Player.GetSize() &&
 			m_Player.head.getPosition().x + m_Player.GetSize() > m_Player.curve[i].position.x &&
 			m_Player.head.getPosition().y < m_Player.curve[i].position.y + m_Player.GetSize() &&
@@ -170,6 +179,18 @@ void Game::CheckCollision()
 			else if (m_GlobalPowerUps[i].GetType() == PowerUpType::SpeedUp) {
 				m_Player.SpeedUp();
 				m_Player.isSpeedUp = true;
+			}
+
+			// GO THROUGH WALLS
+			if (m_GlobalPowerUps[i].GetType() == PowerUpType::CanGoThroughWalls && m_Player.canGoThroughWalls) {
+				for (int j = 0; j < m_Player.m_PowerUps.size(); j++)
+					if (m_Player.m_PowerUps[j].GetType() == PowerUpType::CanGoThroughWalls)
+						m_Player.m_PowerUps[j].RestartDisappearance();
+				m_Player.canGoThroughWalls = true;
+			}
+			else if (m_GlobalPowerUps[i].GetType() == PowerUpType::CanGoThroughWalls) {
+				m_Player.GoThroughWalls();
+				m_Player.canGoThroughWalls = true;
 			}
 
 			// CLEAR MAP
@@ -240,7 +261,7 @@ void Game::MainLoop()
 			}
 
 			// this spawns powerups
-			if (powerUpClock.getElapsedTime().asSeconds() > 5.0f) {
+			if (powerUpClock.getElapsedTime().asSeconds() > 2.0f) {
 				SpawnPowerUp();
 				powerUpClock.restart();
 			}
@@ -251,7 +272,7 @@ void Game::MainLoop()
 					m_Player.m_PowerUps.erase(m_Player.m_PowerUps.begin() + i);
 				}
 			}
-
+			std::cout << m_Player.GetPosition().x << " " << m_Player.GetPosition().y << std::endl;
 			//deletes powerUps after 17 seconds
 			for (int i = 0; i < m_GlobalPowerUps.size(); i++)
 				if (m_GlobalPowerUps[i].GetDisappearance() > 17.0f)

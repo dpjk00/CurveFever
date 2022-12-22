@@ -19,6 +19,7 @@ public:
 	void SetSize(float newSize);
 	void SpeedUp();
 	void SpeedDown();
+	void GoThroughWalls();
 	void SetDefault(PowerUpType type);
 
 public:

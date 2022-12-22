@@ -62,6 +62,22 @@ void Player::SpeedDown()
 	m_Speed = 40.0f;
 }
 
+void Player::GoThroughWalls()
+{
+	if (m_Position.x < 0) {
+		m_Position.x = 1000;
+	}
+	if (m_Position.y < 0) {
+		m_Position.y = 1000;
+	}
+	if (m_Position.x > 1000) {
+		m_Position.x = 0;
+	}
+	if (m_Position.y > 1000) {
+		m_Position.y = 0;
+	}
+}
+
 void Player::SetDefault(PowerUpType type)
 {
 	switch (type) {
@@ -76,6 +92,9 @@ void Player::SetDefault(PowerUpType type)
 	case PowerUpType::SpeedDown:
 		m_Speed = m_BaseSpeed;
 		isSpeedDown = false;
+		break;
+	case PowerUpType::CanGoThroughWalls:
+		canGoThroughWalls = false;
 		break;
 	}
 }
