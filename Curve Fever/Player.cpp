@@ -2,11 +2,10 @@
 
 Player::Player(float radius, sf::Color color)
 {
-	m_Position.x = 500;
-	m_Position.y = 500;
+	m_Position.x = 490;
+	m_Position.y = 490;
 
 	head.setRadius(1.5f);
-	head.setPosition(sf::Vector2f(m_Position.x, m_Position.y));
 }
 
 Player::Player() = default;
@@ -55,19 +54,28 @@ void Player::SetSize(float newSize)
 
 void Player::SpeedUp()
 {
-	m_Speed += 20.0f;
+	m_Speed = 80.0f;
+}
+
+void Player::SpeedDown()
+{
+	m_Speed = 40.0f;
 }
 
 void Player::SetDefault(PowerUpType type)
 {
 	switch (type) {
 	case PowerUpType::SpeedUp:
-		m_Speed -= 20.0f;
+		m_Speed = m_BaseSpeed;
 		isSpeedUp = false;
 		break;
 	case PowerUpType::ThickLine:
-		m_Size = c_Size;
+		m_Size = m_BaseSize;
 		isThickLine = false;
+		break;
+	case PowerUpType::SpeedDown:
+		m_Speed = m_BaseSpeed;
+		isSpeedDown = false;
 		break;
 	}
 }

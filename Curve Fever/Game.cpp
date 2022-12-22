@@ -47,13 +47,9 @@ void Game::Movement(float dt)
 		m_Player.SetDirection(m_Player.GetDirection() - sf::Vector2f(m_Player.GetDirection().y, -m_Player.GetDirection().x) * m_Player.GetRotationSpeed() * dt);
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-		m_Player.SetDirection(sf::Vector2f(3, 0));
-	}
-
 	m_Player.SetPosition(m_Player.GetPosition() + m_Player.GetDirection() * m_Player.GetSpeed() * dt);
 
-	m_Player.head.setPosition(m_Player.GetPosition());
+	m_Player.head.setPosition(m_Player.GetPosition() - sf::Vector2f(2, 2));
 }
 
 void Game::SpawnPowerUp()
@@ -65,7 +61,7 @@ void Game::SpawnPowerUp()
 	circle.setPosition(sf::Vector2f(Random::Int(20, c_WindowWidth - 40), Random::Int(20, c_WindowWidth)));
 
 	Random::Init();
-	int number = Random::Int(0, 1);
+	int number = Random::Int(0, 5);
 
 	switch (number)
 	{
@@ -111,7 +107,7 @@ void Game::DrawLine()
 	m_Player.curve.append(sf::Vertex(sf::Vector2f(m_Player.GetPosition().x + m_Player.GetSize(), m_Player.GetPosition().y + m_Player.GetSize())));
 	m_Player.curve.append(sf::Vertex(sf::Vector2f(m_Player.GetPosition().x - m_Player.GetSize(), m_Player.GetPosition().y + m_Player.GetSize())));
 
-	// changes line to yellow
+	// changes line color to yellow
 	m_Player.curve[m_Player.curve.getVertexCount() - 1].color = sf::Color::Yellow;
 	m_Player.curve[m_Player.curve.getVertexCount() - 2].color = sf::Color::Yellow;
 	m_Player.curve[m_Player.curve.getVertexCount() - 3].color = sf::Color::Yellow;
@@ -126,16 +122,18 @@ void Game::CheckCollision()
 
 	// check wall collission
 	if (m_Player.head.getPosition().x > c_WindowWidth || m_Player.head.getPosition().x < 0 ||
-		m_Player.head.getPosition().y> c_WindowWidth || m_Player.head.getPosition().y < 0)
+		m_Player.head.getPosition().y> c_WindowWidth || m_Player.head.getPosition().y < 0) {
 		m_Player.IsAlive = false;
+	}
 
-	// check snake's collission
-	for (int i = 0; i < size - 300; i++) {
+	// check snake collission
+	for (int i = 0; i < size - 700; i++) {
 		if (m_Player.head.getPosition().x < m_Player.curve[i].position.x + m_Player.GetSize() &&
 			m_Player.head.getPosition().x + m_Player.GetSize() > m_Player.curve[i].position.x &&
 			m_Player.head.getPosition().y < m_Player.curve[i].position.y + m_Player.GetSize() &&
 			m_Player.head.getPosition().y + m_Player.GetSize() > m_Player.curve[i].position.y) {
-
+			std::cout << size << std::endl;
+			std::cout << "You hit snake" << std::endl;
 			m_Player.IsAlive = false;
 			if (!m_Player.IsAlive)
 				break;
@@ -150,6 +148,18 @@ void Game::CheckCollision()
 
 		if (distance < m_GlobalPowerUps[i].m_Sprite.getRadius() + m_Player.head.getRadius())
 		{
+			// SPEED DOWN
+			if (m_GlobalPowerUps[i].GetType() == PowerUpType::SpeedDown && m_Player.isSpeedDown) {
+				for (int j = 0; j < m_Player.m_PowerUps.size(); j++)
+					if (m_Player.m_PowerUps[j].GetType() == PowerUpType::SpeedDown)
+						m_Player.m_PowerUps[j].RestartDisappearance();
+				m_Player.isSpeedDown = true;
+			}
+			else if (m_GlobalPowerUps[i].GetType() == PowerUpType::SpeedDown) {
+				m_Player.SpeedDown();
+				m_Player.isSpeedDown = true;
+			}
+
 			// SPEED UP
 			if (m_GlobalPowerUps[i].GetType() == PowerUpType::SpeedUp && m_Player.isSpeedUp) {
 				for (int j = 0; j < m_Player.m_PowerUps.size(); j++)
@@ -215,7 +225,6 @@ void Game::MainLoop()
 		m_Window->clear(sf::Color::Black);
 		if (m_Player.IsAlive) {
 			Movement(dt);
-
 			// this creates gaps in a snake
 			if (gapClock.getElapsedTime().asSeconds() > 3.0f) {
 				IsGapCreated = true;
@@ -231,7 +240,7 @@ void Game::MainLoop()
 			}
 
 			// this spawns powerups
-			if (powerUpClock.getElapsedTime().asSeconds() > 2.0f) {
+			if (powerUpClock.getElapsedTime().asSeconds() > 5.0f) {
 				SpawnPowerUp();
 				powerUpClock.restart();
 			}
@@ -244,9 +253,9 @@ void Game::MainLoop()
 			}
 
 			//deletes powerUps after 17 seconds
-			for (int i = 0; i < m_Player.m_PowerUps.size(); i++)
-				if (m_Player.m_PowerUps[i].GetDisappearance() > 17.0f)
-					m_GlobalPowerUps.erase(m_Player.m_PowerUps.begin() + i);
+			for (int i = 0; i < m_GlobalPowerUps.size(); i++)
+				if (m_GlobalPowerUps[i].GetDisappearance() > 17.0f)
+					m_GlobalPowerUps.erase(m_GlobalPowerUps.begin() + i);
 
 			CheckCollision();
 		}

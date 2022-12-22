@@ -18,16 +18,20 @@ public:
 	float GetSize();
 	void SetSize(float newSize);
 	void SpeedUp();
+	void SpeedDown();
 	void SetDefault(PowerUpType type);
 
 public:
 	sf::VertexArray curve;
 	sf::CircleShape head;
+
 	bool IsAlive = true;
 	std::vector<PowerUp> m_PowerUps;
 
 	bool isThickLine = false;
 	bool isSpeedUp = false;
+	bool isSpeedDown = false;
+	bool canGoThroughWalls = false;
 
 private:
 	sf::Vector2f m_Position;
@@ -37,7 +41,8 @@ private:
 	float m_RotationSpeed = 4.0f;
 	float m_Size = 1;
 	
-	float c_Size = 1;
+	float m_BaseSize = 1;
+	float m_BaseSpeed = 60.0f;
 
 };
 
