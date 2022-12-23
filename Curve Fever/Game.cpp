@@ -65,8 +65,7 @@ void Game::SpawnPowerUp()
 	circle.setPosition(sf::Vector2f(Random::Int(20, c_WindowWidth - 40), Random::Int(20, c_WindowWidth)));
 
 	Random::Init();
-	//int number = Random::Int(0, 5);
-	int number = 2;
+	int number = Random::Int(0, 5);
 
 	switch (number)
 	{
@@ -132,6 +131,7 @@ void Game::CheckCollision()
 		if (m_Player.head.getPosition().x > c_WindowWidth || m_Player.head.getPosition().x < 0 ||
 			m_Player.head.getPosition().y> c_WindowWidth || m_Player.head.getPosition().y < 0) {
 			m_Player.IsAlive = false;
+			std::cout << "You hit wall" << std::endl;
 		}
 	}
 
@@ -141,7 +141,6 @@ void Game::CheckCollision()
 			m_Player.head.getPosition().x + m_Player.GetSize() > m_Player.curve[i].position.x &&
 			m_Player.head.getPosition().y < m_Player.curve[i].position.y + m_Player.GetSize() &&
 			m_Player.head.getPosition().y + m_Player.GetSize() > m_Player.curve[i].position.y) {
-			std::cout << size << std::endl;
 			std::cout << "You hit snake" << std::endl;
 			m_Player.IsAlive = false;
 			if (!m_Player.IsAlive)
@@ -272,13 +271,22 @@ void Game::MainLoop()
 					m_Player.m_PowerUps.erase(m_Player.m_PowerUps.begin() + i);
 				}
 			}
-			std::cout << m_Player.GetPosition().x << " " << m_Player.GetPosition().y << std::endl;
+
 			//deletes powerUps after 17 seconds
 			for (int i = 0; i < m_GlobalPowerUps.size(); i++)
 				if (m_GlobalPowerUps[i].GetDisappearance() > 17.0f)
 					m_GlobalPowerUps.erase(m_GlobalPowerUps.begin() + i);
 
 			CheckCollision();
+		}
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
+			m_Player.curve.clear();
+			m_Player.SetDefault();
+			m_GlobalPowerUps.clear();
+			m_Player.m_PowerUps.clear();
+			m_Player.SetPosition(sf::Vector2f(500, 500));
+			m_Player.SetDirection(sf::Vector2f(3, 0));
 		}
 
 		Draw();

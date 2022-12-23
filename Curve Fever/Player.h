@@ -21,6 +21,7 @@ public:
 	void SpeedDown();
 	void GoThroughWalls();
 	void SetDefault(PowerUpType type);
+	void SetDefault();
 
 public:
 	sf::VertexArray curve;

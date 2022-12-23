@@ -98,3 +98,17 @@ void Player::SetDefault(PowerUpType type)
 		break;
 	}
 }
+
+void Player::SetDefault()
+{
+	m_Speed = m_BaseSpeed;
+	isSpeedUp = false;
+
+	m_Size = m_BaseSize;
+	isThickLine = false;
+
+	m_Speed = m_BaseSpeed;
+	isSpeedDown = false;
+
+	canGoThroughWalls = false;
+}

@@ -1,2 +1,24 @@
-﻿  Player.cpp
+﻿  Game.cpp
+C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Random.h(17,14): warning C4244: 'return': conversion from 'unsigned int' to 'float', possible loss of data
+C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(37,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(68,13): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(152,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(153,10): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(154,10): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(155,16): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(161,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(173,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(185,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(201,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(224,27): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
+C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(268,22): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Pajunk\source\repos\Curve Fever\Curve Fever\Game.cpp(276,22): warning C4018: '<': signed/unsigned mismatch
   Curve Fever.vcxproj -> C:\Users\Pajunk\source\repos\Curve Fever\Debug\Curve Fever.exe
